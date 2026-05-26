@@ -11,11 +11,14 @@ export default defineConfig(({ mode }) => {
         '/api/anthropic': {
           target: 'https://api.anthropic.com',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/anthropic/, ''),
+          // Rewrite /api/anthropic → /v1/messages (mirrors the Vercel serverless function)
+          rewrite: () => '/v1/messages',
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
               proxyReq.setHeader('x-api-key', env.ANTHROPIC_API_KEY || '')
               proxyReq.setHeader('anthropic-version', '2023-06-01')
+              proxyReq.removeHeader('origin')
+              proxyReq.removeHeader('referer')
             })
           },
         },

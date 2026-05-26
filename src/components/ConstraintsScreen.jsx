@@ -1,31 +1,33 @@
-export default function ConstraintsScreen({
-  value,
-  onChange,
-  onGenerate,
-  isLoading,
-  error,
-}) {
+import RetroWindow from './RetroWindow'
+import { playClick } from '../utils/retroSound'
+
+export default function ConstraintsScreen({ value, onChange, onGenerate, isLoading, error }) {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !isLoading) {
+      playClick()
       onGenerate()
     }
   }
 
   if (isLoading) {
     return (
-      <div className="loading-wrapper">
-        <div className="loading-dots">
-          <div className="loading-dot" />
-          <div className="loading-dot" />
-          <div className="loading-dot" />
+      <RetroWindow title="GENERATING YOUR DAY..." icon="⏳">
+        <div className="loading-wrapper">
+          <div className="loading-retro-bar">
+            <div className="loading-retro-block" />
+            <div className="loading-retro-block" />
+            <div className="loading-retro-block" />
+            <div className="loading-retro-block" />
+            <div className="loading-retro-block" />
+          </div>
+          <p className="loading-text">Putting your day together...</p>
         </div>
-        <p className="loading-text">Putting your day together...</p>
-      </div>
+      </RetroWindow>
     )
   }
 
   return (
-    <div>
+    <RetroWindow title="ANY LIMITS TODAY?" icon="🚧">
       <div className="screen-header">
         <h1>Any limits on today?</h1>
         <p>Hard stops, appointments, or energy limits. Leave blank if none.</p>
@@ -33,7 +35,7 @@ export default function ConstraintsScreen({
 
       <input
         type="text"
-        className="constraints-input"
+        className="retro-input constraints-input"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -49,13 +51,13 @@ export default function ConstraintsScreen({
 
       <div className="screen-footer">
         <button
-          className="btn btn-primary btn-generate"
-          onClick={onGenerate}
+          className="win95-btn win95-btn--navy btn-generate"
+          onClick={() => { playClick(); onGenerate() }}
           disabled={isLoading}
         >
-          Generate my day
+          Generate my day ▶
         </button>
       </div>
-    </div>
+    </RetroWindow>
   )
 }

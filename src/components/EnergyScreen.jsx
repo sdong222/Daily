@@ -1,27 +1,15 @@
+import RetroWindow from './RetroWindow'
+import { playClick } from '../utils/retroSound'
+
 const ENERGY_OPTIONS = [
-  {
-    level: 'low',
-    icon: '○',
-    label: 'Low',
-    desc: 'Running on fumes',
-  },
-  {
-    level: 'okay',
-    icon: '◑',
-    label: 'Okay',
-    desc: "I'm here",
-  },
-  {
-    level: 'solid',
-    icon: '●',
-    label: 'Solid',
-    desc: 'Ready to go',
-  },
+  { level: 'low',   icon: '○', label: 'Low',   desc: 'Running on fumes' },
+  { level: 'okay',  icon: '◑', label: 'Okay',  desc: "I'm here" },
+  { level: 'solid', icon: '●', label: 'Solid',  desc: 'Ready to go' },
 ]
 
 export default function EnergyScreen({ onSelect }) {
   return (
-    <div>
+    <RetroWindow title="ENERGY CHECK" icon="⚡">
       <div className="screen-header">
         <h1>How are you feeling right now?</h1>
         <p>Tap one. No judgment.</p>
@@ -32,7 +20,7 @@ export default function EnergyScreen({ onSelect }) {
           <button
             key={level}
             className={`energy-btn energy-btn--${level}`}
-            onClick={() => onSelect(level)}
+            onClick={() => { playClick(); onSelect(level) }}
           >
             <span className="energy-icon" aria-hidden="true">{icon}</span>
             <span className="energy-label">{label}</span>
@@ -40,6 +28,6 @@ export default function EnergyScreen({ onSelect }) {
           </button>
         ))}
       </div>
-    </div>
+    </RetroWindow>
   )
 }

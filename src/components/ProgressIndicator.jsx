@@ -1,22 +1,22 @@
+const STEP_LABELS = ['Brain Dump', 'Energy', 'Limits']
+const TOTAL_SEGMENTS = 12
+
 export default function ProgressIndicator({ current, total }) {
+  const filledSegments = Math.round((current / total) * TOTAL_SEGMENTS)
+
   return (
-    <div className="progress-bar" role="progressbar" aria-valuenow={current + 1} aria-valuemax={total}>
-      {Array.from({ length: total }).map((_, i) => (
-        <div key={i} className="progress-step-group" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <div className="retro-progress-wrap" role="progressbar" aria-valuenow={current + 1} aria-valuemax={total}>
+      <span className="retro-progress-label">
+        STEP {current + 1} OF {total}: {STEP_LABELS[current] ?? ''}
+      </span>
+      <div className="retro-progress-track">
+        {Array.from({ length: TOTAL_SEGMENTS }).map((_, i) => (
           <div
-            className={[
-              'progress-dot',
-              i === current ? 'progress-dot--active' : '',
-              i < current ? 'progress-dot--done' : '',
-            ]
-              .filter(Boolean)
-              .join(' ')}
+            key={i}
+            className={`retro-progress-segment ${i < filledSegments ? 'retro-progress-segment--filled' : ''}`}
           />
-          {i < total - 1 && (
-            <div className={`progress-line ${i < current ? 'progress-line--done' : ''}`} />
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }
