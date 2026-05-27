@@ -4,49 +4,58 @@
 
 /* ── Design Tokens ─────────────────────────────────── */
 :root {
-  /* ── New palette: @designerland ──────────────────── */
-  --night:       #000181;   /* Night Skies  — deep navy            */
-  --blue-rasp:   #006EE9;   /* Blue Raspberry — bright action blue  */
-  --violet:      #E8A0FF;   /* Violet       — light purple          */
-  --lime:        #D0FFA4;   /* Powdered Lime — fresh green          */
-  --sunny:       #83E7FF;   /* Sunny Skies  — sky blue              */
+  /* ── Palette ──────────────────────────────────────── */
+  --night:       #000181;
+  --blue-rasp:   #006EE9;
+  --violet:      #E8A0FF;
+  --lime:        #D0FFA4;
+  --sunny:       #83E7FF;
 
-  /* Semantic aliases */
+  /* ── Win95 chrome colors ─────────────────────────── */
+  --w95-face:    #C0C0C0;   /* Button / window face */
+  --w95-light:   #FFFFFF;   /* Bright highlight */
+  --w95-hilight: #DFDFDF;   /* Inner highlight */
+  --w95-shadow:  #808080;   /* Inner shadow */
+  --w95-dark:    #404040;   /* Deep shadow */
+  --w95-title:   #000080;   /* Classic navy title bar */
+  --w95-desktop: #008080;   /* Classic teal desktop */
+
+  /* ── Semantic aliases ────────────────────────────── */
   --blue:        var(--blue-rasp);
   --blue-hover:  #005ABE;
   --blue-active: #0047A0;
-  --blue-light:  #E3F2FF;
+  --blue-light:  #CCE4FF;
 
-  --gray-100:    #F2F4F8;
-  --gray-200:    #E0E4EC;
-  --gray-400:    #9AA0B0;
-  --gray-600:    #4A5060;   /* Darkened for 4.5:1 contrast on white */
-  --gray-800:    #1A1E2A;
+  --gray-100:    #D4D0C8;   /* Win95 dialog bg */
+  --gray-200:    #C0C0C0;
+  --gray-400:    #808080;
+  --gray-600:    #404040;
+  --gray-800:    #000000;
   --white:       #FFFFFF;
   --black:       #000000;
   --red:         #C50F1F;
   --red-light:   #FDE7E9;
 
-  /* Priority colors */
-  --priority-a:        #E8A0FF;  /* Violet — night text: high contrast, eye-catching */
-  --priority-a-text:   #000181;  /* Night Skies                    */
-  --priority-b:        #006EE9;  /* Blue Raspberry — white: 4.6:1  */
+  /* Priority colors — keep ADHD color coding */
+  --priority-a:        #E8A0FF;
+  --priority-a-text:   #000181;
+  --priority-b:        #006EE9;
   --priority-b-text:   #FFFFFF;
-  --priority-c:        #1A6A00;  /* Dark green for WCAG on lime bg  */
+  --priority-c:        #1A6A00;
   --priority-c-text:   #FFFFFF;
-  --priority-c-bg:     #D0FFA4;  /* Powdered Lime background        */
+  --priority-c-bg:     #D0FFA4;
 
   /* Surfaces */
-  --surface:       #F0F0F0;
-  --surface-card:  #F8F8F8;
-  --border-color:  #888888;  /* Darkened for 3:1 on white bg */
+  --surface:       var(--w95-face);
+  --surface-card:  var(--w95-face);
+  --border-color:  var(--w95-shadow);
 
-  /* Geometry */
-  --radius:    4px;
-  --radius-sm: 2px;
-  --radius-lg: 6px;
+  /* ── Square Win95 corners everywhere ─────────────── */
+  --radius:    0px;
+  --radius-sm: 0px;
+  --radius-lg: 0px;
 
-  /* Typography — WCAG minimum 16px body */
+  /* Typography */
   --font-base: 17px;
   --font-sm:   15px;
   --font-xs:   13px;
@@ -54,13 +63,29 @@
   --pixel-font: 'Press Start 2P', monospace;
   --body-font:  'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* Touch targets — WCAG 2.5.5 minimum 44×44px */
+  /* Touch targets */
   --touch-min: 44px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.14);
-  --shadow:    0 2px 8px rgba(0,0,0,0.12);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.14);
+  /* Win95 bevel helpers (reused via var) */
+  --bevel-raised:
+    inset  1px  1px 0 var(--w95-light),
+    inset  2px  2px 0 var(--w95-hilight),
+    inset -1px -1px 0 var(--w95-dark),
+    inset -2px -2px 0 var(--w95-shadow);
+  --bevel-pressed:
+    inset  1px  1px 0 var(--w95-dark),
+    inset  2px  2px 0 var(--w95-shadow),
+    inset -1px -1px 0 var(--w95-hilight),
+    inset -2px -2px 0 var(--w95-light);
+  --bevel-sunken:
+    inset  1px  1px 0 var(--w95-shadow),
+    inset  2px  2px 0 var(--w95-dark),
+    inset -1px -1px 0 var(--w95-light),
+    inset -2px -2px 0 var(--w95-hilight);
+
+  --shadow-sm: 2px 2px 0 var(--w95-dark);
+  --shadow:    2px 2px 0 var(--w95-dark);
+  --shadow-md: 4px 4px 0 var(--w95-dark);
 }
 
 /* ── Base ───────────────────────────────────────────── */
@@ -70,15 +95,21 @@ body {
   font-family: var(--body-font);
   font-size: var(--font-base);
   color: var(--gray-800);
-  /* Night Skies base gradient tinted with palette */
-  background-color: #eaf0ff;
-  background-image: linear-gradient(135deg, #f0eaff 0%, #eaf2ff 35%, #edfff5 65%, #e8fbff 100%);
+  /* Pixel art landscape wallpaper */
+  background-color: #dde8f5;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(180, 210, 240, 0.85) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(110, 155, 230, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 70% at 50% 80%, rgba(220, 232, 248, 0.7) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 75% 55%, rgba(160, 195, 240, 0.4) 0%, transparent 50%),
+    linear-gradient(160deg, #e8eff9 0%, #d0e1f5 40%, #e4ecf8 70%, #f0f4fb 100%);
+  background-attachment: fixed;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   position: relative;
 }
 
-/* Aurora layers — using new palette */
+/* Animated soft aura layers — drift slowly like light through clouds */
 body::before, body::after {
   content: '';
   position: fixed;
@@ -88,15 +119,23 @@ body::before, body::after {
 }
 body::before {
   background:
-    radial-gradient(ellipse at 20% 25%, rgba(232, 160, 255, 0.22) 0%, transparent 52%),  /* Violet */
-    radial-gradient(ellipse at 80% 75%, rgba(131, 231, 255, 0.18) 0%, transparent 50%);  /* Sunny Skies */
-  animation: aura1 16s ease-in-out infinite alternate;
+    radial-gradient(ellipse 55% 45% at 20% 30%, rgba(160, 200, 245, 0.45) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 55% at 80% 70%, rgba(200, 220, 250, 0.35) 0%, transparent 55%);
+  animation: aura1 18s ease-in-out infinite alternate;
 }
 body::after {
   background:
-    radial-gradient(ellipse at 75% 18%, rgba(208, 255, 164, 0.20) 0%, transparent 46%),  /* Powdered Lime */
-    radial-gradient(ellipse at 22% 80%, rgba(0, 110, 233, 0.12) 0%, transparent 46%);    /* Blue Raspberry */
-  animation: aura2 20s ease-in-out infinite alternate;
+    radial-gradient(ellipse 60% 40% at 70% 20%, rgba(130, 170, 235, 0.30) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 60% at 30% 75%, rgba(210, 228, 252, 0.35) 0%, transparent 52%);
+  animation: aura2 24s ease-in-out infinite alternate;
+}
+@keyframes aura1 {
+  from { transform: translate(-1%, -1%) scale(1);    opacity: 0.8; }
+  to   { transform: translate( 2%,  2%) scale(1.05); opacity: 1;   }
+}
+@keyframes aura2 {
+  from { transform: translate( 2%, -1%) scale(1.04); opacity: 0.9; }
+  to   { transform: translate(-1%,  2%) scale(1);    opacity: 1;   }
 }
 @keyframes aura1 {
   from { transform: translate(-2%, -2%) scale(1);    opacity: 0.7; }
@@ -116,9 +155,9 @@ body::after {
   transition: padding-right 0.28s ease;
 }
 
-/* When parking lot panel is open, shift content away */
+/* Parking lot overlays content — no content shift */
 body.parking-panel-open #root {
-  padding-right: 288px;
+  padding-right: 0;
 }
 
 button  { font-family: var(--body-font); cursor: pointer; border: none; background: none; }
@@ -128,18 +167,46 @@ textarea, input { font-family: var(--body-font); }
 ::-webkit-scrollbar-track { background: var(--gray-100); }
 ::-webkit-scrollbar-thumb { background: var(--gray-400); border-radius: 5px; }
 
-/* ── OS Window ─────────────────────────────────────── */
-.win95-window {
-  background: var(--surface);
-  border: 1px solid var(--border-color);
+/* ── WCAG 2.4.7 — Visible focus indicator (keyboard nav) ── */
+/* Remove browser default; provide a consistent, high-contrast ring */
+*:focus         { outline: none; }
+*:focus-visible {
+  outline: 3px solid var(--blue-rasp);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+/* Inset ring for elements where outer ring would be clipped (inputs, textareas) */
+.retro-input:focus-visible,
+.retro-textarea:focus-visible,
+.pomo-num-input:focus-visible {
+  outline: none;
+  border-color: var(--blue-rasp);
+  box-shadow: 0 0 0 3px rgba(0, 110, 233, 0.30), inset 0 0 0 1px var(--blue-rasp);
+}
+/* Ctrl buttons: ring inside the button so it doesn't overflow title bar */
+.win95-ctrl-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 3px rgba(0, 110, 233, 0.7);
+}
+/* Checkbox */
+.retro-checkbox:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--blue-rasp);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+}
+
+/* ── OS Window — raised Win95 chrome ──────────────── */
+.win95-window {
+  background: var(--w95-face);
+  border: none;
+  border-radius: 0;
+  box-shadow: var(--bevel-raised), 1px 1px 0 var(--black) inset;
 }
 
 /* ── Title Bar ─────────────────────────────────────── */
 .win95-titlebar {
-  background: var(--night);
-  color: var(--lime);
+  background: linear-gradient(to right, var(--w95-title) 0%, #1084D0 100%);
+  color: #FFFFFF;
   padding: 0 8px 0 12px;
   min-height: var(--touch-min);
   display: flex;
@@ -150,13 +217,22 @@ textarea, input { font-family: var(--body-font); }
   user-select: none;
 }
 
-/* Priority-colored title bars — new palette */
-.win95-titlebar--red    { background: var(--violet);     color: var(--night); }
-.win95-titlebar--blue   { background: var(--blue-rasp);  color: #fff; }
-.win95-titlebar--amber  { background: var(--lime);       color: var(--night); }
-.win95-titlebar--coral  { background: #C50F1F;           color: #fff; }
-.win95-titlebar--teal   { background: #0E7A6D;           color: #fff; }
-.win95-titlebar--mustard { background: var(--lime);      color: var(--night); }
+/* Priority-colored title bars — palette accent on Win95 gradient */
+.win95-titlebar--red    {
+  background: linear-gradient(to right, #6600AA 0%, var(--violet) 100%);
+  color: var(--night);
+}
+.win95-titlebar--blue   {
+  background: linear-gradient(to right, #003E8A 0%, var(--blue-rasp) 100%);
+  color: #fff;
+}
+.win95-titlebar--amber  {
+  background: linear-gradient(to right, #5A8A00 0%, var(--lime) 100%);
+  color: var(--night);
+}
+.win95-titlebar--coral  { background: linear-gradient(to right, #8A0000 0%, #C50F1F 100%); color: #fff; }
+.win95-titlebar--teal   { background: linear-gradient(to right, #005544 0%, #0E7A6D 100%); color: #fff; }
+.win95-titlebar--mustard { background: linear-gradient(to right, #5A8A00 0%, var(--lime) 100%); color: var(--night); }
 
 /* Task cards use a larger, readable font instead of pixel font */
 .task-card .win95-titlebar-text {
@@ -179,17 +255,26 @@ textarea, input { font-family: var(--body-font); }
 }
 .win95-titlebar-icon { font-size: 14px; flex-shrink: 0; }
 
-.win95-titlebar-controls { display: flex; gap: 4px; flex-shrink: 0; }
+/* Title bar — fits 44px buttons with gap */
+.win95-titlebar { min-height: 52px; align-items: center; padding: 4px 4px 4px 10px; }
+.win95-titlebar-controls {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+  align-items: center;
+}
 
+/* ── Ctrl buttons — Win95 raised square buttons ───── */
 .win95-ctrl-btn {
-  width: 32px;
-  height: 32px;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 3px;
-  color: var(--white);
-  font-size: 13px;
-  font-weight: 700;
+  min-width: 44px;
+  width: 44px;
+  height: 44px;
+  background: var(--w95-face);
+  border: none;
+  border-radius: 0;
+  color: var(--black);
+  font-size: 16px;
+  font-weight: 900;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -197,142 +282,129 @@ textarea, input { font-family: var(--body-font); }
   line-height: 1;
   padding: 0;
   font-family: var(--body-font);
-  transition: background 0.1s;
   touch-action: manipulation;
+  box-shadow: var(--bevel-raised);
 }
-.win95-ctrl-btn:hover  { background: rgba(255,255,255,0.28); }
-.win95-ctrl-btn:active { background: rgba(255,255,255,0.45); }
-/* On dark/colored bars, close button turns red-ish on hover */
-.win95-ctrl-btn--close:hover { background: rgba(255,40,40,0.8); }
+.win95-ctrl-btn:hover  { background: #D4D0C8; }
+.win95-ctrl-btn:active { box-shadow: var(--bevel-pressed); }
+.win95-ctrl-btn--close:hover { background: var(--red); color: #fff; }
+.win95-ctrl-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
-/* For non-colored bars (parking lot, history) */
-.win95-titlebar:not([class*="--"]) .win95-ctrl-btn,
-.win95-titlebar.win95-titlebar--none .win95-ctrl-btn {
-  color: var(--white);
-}
+.win95-window-body { padding: 14px; background: var(--w95-face); }
 
-.win95-window-body { padding: 14px; }
-
-/* ── Buttons ──────────────────────────────────────── */
+/* ── Buttons — Win95 raised 3D ────────────────────── */
 .win95-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 10px 18px;
-  background: var(--gray-200);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  color: var(--gray-800);
+  padding: 10px 20px;
+  background: var(--w95-face);
+  border: none;
+  border-radius: 0;
+  color: var(--black);
   font-family: var(--body-font);
   font-size: var(--font-sm);
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
   min-height: var(--touch-min);
   touch-action: manipulation;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  box-shadow: var(--bevel-raised);
+  transition: none;
 }
-.win95-btn:hover:not(:disabled)  { background: var(--gray-400); border-color: var(--gray-600); }
-.win95-btn:active:not(:disabled) { background: var(--gray-600); color: var(--white); transform: translateY(1px); }
+.win95-btn:hover:not(:disabled)  { background: #D4D0C8; }
+.win95-btn:active:not(:disabled) { box-shadow: var(--bevel-pressed); padding-top: 11px; padding-left: 21px; }
 .win95-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* Night Skies — primary action */
+/* ── Colored button variants — palette on Win95 base ── */
 .win95-btn--navy {
   background: var(--night); color: var(--lime);
-  border-color: #110299;
+  box-shadow: var(--bevel-raised);
 }
 .win95-btn--navy:hover:not(:disabled)  { background: #110299; }
-.win95-btn--navy:active:not(:disabled) { background: #000060; }
+.win95-btn--navy:active:not(:disabled) { box-shadow: var(--bevel-pressed); }
 
-/* Blue Raspberry — secondary action */
 .win95-btn--blue {
   background: var(--blue-rasp); color: #fff;
-  border-color: var(--blue-hover);
+  box-shadow: var(--bevel-raised);
 }
 .win95-btn--blue:hover:not(:disabled)  { background: var(--blue-hover); }
-.win95-btn--blue:active:not(:disabled) { background: var(--blue-active); }
+.win95-btn--blue:active:not(:disabled) { box-shadow: var(--bevel-pressed); }
 
 .win95-btn--coral,
 .win95-btn--red {
-  background: var(--red); color: var(--white); border-color: #a00d1a;
+  background: var(--red); color: #fff; box-shadow: var(--bevel-raised);
 }
 .win95-btn--coral:hover:not(:disabled),
 .win95-btn--red:hover:not(:disabled)    { background: #a00d1a; }
+.win95-btn--coral:active:not(:disabled),
+.win95-btn--red:active:not(:disabled)   { box-shadow: var(--bevel-pressed); }
 
-/* Lime — quick-win accent */
-.win95-btn--lime {
-  background: var(--lime); color: var(--night); border-color: #a0d070;
-}
-.win95-btn--lime:hover:not(:disabled) { background: #b8f088; }
-
+.win95-btn--lime,
 .win95-btn--mustard,
 .win95-btn--amber {
-  background: var(--lime); color: var(--night); border-color: #a0d070;
+  background: var(--lime); color: var(--night); box-shadow: var(--bevel-raised);
 }
+.win95-btn--lime:hover:not(:disabled),
 .win95-btn--mustard:hover:not(:disabled),
-.win95-btn--amber:hover:not(:disabled)  { background: #b8f088; }
+.win95-btn--amber:hover:not(:disabled) { background: #b8f088; }
+.win95-btn--lime:active:not(:disabled),
+.win95-btn--mustard:active:not(:disabled),
+.win95-btn--amber:active:not(:disabled) { box-shadow: var(--bevel-pressed); }
 
 .win95-btn--teal {
-  background: #0E7A6D; color: var(--white); border-color: #0a5c52;
+  background: #0E7A6D; color: #fff; box-shadow: var(--bevel-raised);
 }
 .win95-btn--teal:hover:not(:disabled) { background: #0a5c52; }
+.win95-btn--teal:active:not(:disabled) { box-shadow: var(--bevel-pressed); }
 
-/* ── Inputs ───────────────────────────────────────── */
+/* ── Inputs — Win95 sunken field ─────────────────── */
 .retro-input, .retro-textarea {
   background: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  color: var(--gray-800);
+  border: none;
+  border-radius: 0;
+  color: var(--black);
   font-family: var(--body-font);
   font-size: var(--font-base);
-  outline: none;
   padding: 10px 14px;
   min-height: var(--touch-min);
   width: 100%;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: var(--bevel-sunken);
 }
 .retro-input:focus, .retro-textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 2px var(--blue-light);
+  outline: 1px dotted var(--black);
+  outline-offset: -3px;
 }
 .retro-textarea { resize: none; line-height: 1.6; }
 
-/* ── Checkbox — clean 44×44 touch target ─────────── */
-/* Button IS the full touch target; inner visual box drawn via ::before */
+/* ── Checkbox — Win95 square checkbox ────────────── */
 .retro-checkbox {
   width: 44px; height: 44px; min-width: 44px;
   background: transparent;
   border: none;
-  border-radius: var(--radius);
+  border-radius: 0;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; flex-shrink: 0;
   padding: 0; margin: 0;
   position: relative;
   touch-action: manipulation;
-  transition: background 0.12s;
 }
 .retro-checkbox::before {
   content: '';
-  width: 28px; height: 28px;
-  border: 2.5px solid var(--border-color);
-  border-radius: 5px;
-  background: var(--white);
+  width: 26px; height: 26px;
   display: block;
-  transition: border-color 0.15s, background 0.15s;
+  background: var(--white);
+  box-shadow: var(--bevel-sunken);
   flex-shrink: 0;
 }
-.retro-checkbox:hover::before  { border-color: var(--violet); }
-.retro-checkbox:active { background: rgba(0,0,0,0.06); border-radius: 50%; }
-.retro-checkbox--checked::before {
-  background: var(--night);
-  border-color: var(--night);
-}
+.retro-checkbox:hover::before { background: #FFFFF0; }
+.retro-checkbox--checked::before { background: var(--white); }
 .retro-checkbox--checked::after {
   content: '✓';
   position: absolute;
-  font-size: 17px; font-weight: 900;
-  color: var(--lime); line-height: 1;
+  font-size: 18px; font-weight: 900;
+  color: var(--black); line-height: 1;
   pointer-events: none;
 }
 
@@ -469,7 +541,7 @@ textarea, input { font-family: var(--body-font); }
 /* ── Task Card ────────────────────────────────────── */
 .task-card { width: 100%; }
 
-.task-card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
+.task-card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px; background: var(--w95-face); }
 .task-card--done .task-card-body { opacity: 0.5; }
 
 /* Drag states */
@@ -500,14 +572,53 @@ textarea, input { font-family: var(--body-font); }
   line-height: 1.45; word-break: break-word;
 }
 .task-text--done { text-decoration: line-through; color: var(--gray-400); }
-.task-text-input { font-size: var(--font-base); font-weight: 500; min-height: var(--touch-min); padding: 8px 12px; }
+.task-text-input { font-size: 19px; font-weight: 600; min-height: var(--touch-min); padding: 6px 10px; width: 100%; }
+
+/* Editable task title button */
+.task-edit-btn {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 4px 6px;
+  margin: -4px -6px;
+  cursor: text;
+  text-align: left;
+  width: calc(100% + 12px);
+  min-height: var(--touch-min);
+  transition: background 0.1s;
+}
+.task-edit-btn:hover { background: rgba(0,0,0,0.05); }
+.task-edit-btn:hover .task-edit-icon { opacity: 1; }
+.task-edit-btn:focus-visible {
+  outline: 2px dashed var(--blue-rasp);
+  outline-offset: 2px;
+}
+.task-edit-text {
+  font-size: 19px; font-weight: 600; color: var(--gray-800);
+  line-height: 1.45; word-break: break-word; flex: 1;
+}
+.task-edit-btn.task-text--done .task-edit-text {
+  text-decoration: line-through; color: var(--gray-400);
+}
+.task-edit-icon {
+  font-size: 15px;
+  color: var(--gray-400);
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+  line-height: 1;
+}
 
 /* ── Task Card Controls Row ───────────────────────── */
 .task-card-controls {
   display: flex; align-items: center;
   flex-wrap: wrap; gap: 10px;
-  padding-top: 2px;
-  border-top: 1px solid var(--gray-200);
+  padding-top: 10px;
+  border-top: 1px solid var(--w95-shadow);
   margin-top: 2px;
 }
 
@@ -537,14 +648,14 @@ textarea, input { font-family: var(--body-font); }
   text-transform: uppercase;
 }
 .pomo-num-input {
-  width: 60px; padding: 8px 6px; font-size: var(--font-sm); font-weight: 600;
+  width: 60px; padding: 8px 6px; font-size: var(--font-sm); font-weight: 700;
   text-align: center; background: var(--white);
-  border: 1px solid var(--border-color); border-radius: var(--radius-sm);
-  color: var(--gray-800); outline: none; min-height: var(--touch-min);
+  border: none; border-radius: 0;
+  color: var(--black); min-height: var(--touch-min);
   touch-action: manipulation;
-  transition: border-color 0.12s;
+  box-shadow: var(--bevel-sunken);
 }
-.pomo-num-input:focus { border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-light); }
+.pomo-num-input:focus { outline: 1px dotted var(--black); outline-offset: -2px; }
 .pomo-separator { font-size: 15px; color: var(--gray-400); font-weight: 500; }
 
 .start-focus-btn { margin-left: auto; padding: 10px 18px; font-size: 14px; font-weight: 600; }
@@ -618,39 +729,72 @@ textarea, input { font-family: var(--body-font); }
 }
 
 /* ── Parking Lot (side panel) ─────────────────────── */
-.parking-lot-btn {
-  position: fixed; bottom: 24px; right: 24px;
-  width: 52px; height: 52px;
-  background: var(--blue); border: 1px solid var(--blue-hover);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 2px;
-  z-index: 200; cursor: pointer;
-  transition: background 0.12s, transform 0.1s;
+/* ── Right-edge tab strip ─────────────────────────── */
+.right-tabs {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 401;
+  transition: right 0.25s ease;
 }
-.parking-lot-btn:hover { background: var(--blue-hover); }
-.parking-lot-btn:active { transform: scale(0.96); }
-.parking-lot-btn--open { background: var(--blue-active); }
+.right-tabs--open { right: 320px; }
 
-.parking-lot-btn-label {
-  font-family: var(--pixel-font); font-size: 5px;
-  color: var(--white); line-height: 1;
+.right-tab {
+  width: 32px;
+  height: 100px;
+  background: var(--w95-face);
+  border: none;
+  border-radius: 0;
+  box-shadow: var(--bevel-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.1s;
+  touch-action: manipulation;
 }
+.right-tab:hover  { background: #D4D0C8; }
+.right-tab:active { box-shadow: var(--bevel-pressed); }
+.right-tab--active {
+  background: var(--night);
+  box-shadow: var(--bevel-pressed);
+}
+.right-tab--active .right-tab-label { color: var(--lime); }
+
+.right-tab-label {
+  font-family: var(--pixel-font);
+  font-size: 6px;
+  color: var(--black);
+  line-height: 1;
+  letter-spacing: 0.1em;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  user-select: none;
+}
+
+/* Tab slides left to attach to the open panel */
+.parking-lot-btn--open { right: 320px; }
 
 /* Side panel */
 .parking-lot-panel {
   position: fixed; top: 0; right: 0; bottom: 0;
-  width: 280px;
-  background: var(--surface);
-  border-left: 1px solid var(--border-color);
-  box-shadow: -4px 0 20px rgba(0,0,0,0.1);
-  z-index: 199;
+  width: 320px;
+  background: var(--w95-face);
+  border-left: none;
+  box-shadow: var(--bevel-raised), -3px 0 0 var(--w95-dark);
+  z-index: 400; /* above everything, overlays content */
   display: flex; flex-direction: column;
   transform: translateX(100%);
-  transition: transform 0.28s ease;
+  transition: transform 0.25s ease;
 }
 .parking-lot-panel--open { transform: translateX(0); }
+
 
 .parking-lot-panel-inner {
   display: flex; flex-direction: column; height: 100%;
@@ -672,9 +816,13 @@ textarea, input { font-family: var(--body-font); }
   border: none; border-radius: 0;
   border-bottom: 1px solid var(--gray-200);
   resize: none; background: var(--white);
-  outline: none;
 }
-.parking-lot-textarea:focus { box-shadow: none; border-color: var(--blue); }
+.parking-lot-textarea:focus { border-color: var(--blue-rasp); }
+.parking-lot-textarea:focus-visible {
+  outline: none;
+  border-color: var(--blue-rasp);
+  box-shadow: inset 0 0 0 2px rgba(0,110,233,0.25);
+}
 
 .parking-lot-actions {
   display: grid; grid-template-columns: 1fr 1fr;
@@ -682,7 +830,7 @@ textarea, input { font-family: var(--body-font); }
   border-top: 1px solid var(--gray-200);
 }
 .parking-lot-actions .win95-btn {
-  font-size: 11px; padding: 5px 8px; min-height: 26px;
+  font-size: var(--font-xs); padding: 8px 10px; min-height: var(--touch-min);
 }
 .parking-lot-actions .win95-btn--full { grid-column: 1 / -1; }
 
@@ -950,9 +1098,9 @@ textarea, input { font-family: var(--body-font); }
   flex-shrink: 0;
 }
 .prev-task-btn {
-  font-size: 11px;
-  padding: 4px 8px;
-  min-height: 24px;
+  font-size: var(--font-xs);
+  padding: 8px 12px;
+  min-height: var(--touch-min);
 }
 
 .prev-tasks-footer {
@@ -962,61 +1110,31 @@ textarea, input { font-family: var(--body-font); }
   border-top: 1px solid var(--gray-200);
   background: var(--gray-100);
 }
-.prev-tasks-footer .win95-btn { font-size: 12px; padding: 5px 12px; }
+.prev-tasks-footer .win95-btn { font-size: var(--font-xs); padding: 10px 14px; min-height: var(--touch-min); }
 
 /* ── History FAB ─────────────────────────────────── */
-.history-fab {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  width: 52px;
-  height: 52px;
-  background: var(--gray-800);
-  border: 1px solid var(--gray-600);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  z-index: 200;
-  cursor: pointer;
-  transition: background 0.12s, transform 0.1s;
-}
-.history-fab:hover  { background: var(--gray-600); }
-.history-fab:active { transform: scale(0.96); }
-.history-fab-label {
-  font-family: var(--pixel-font);
-  font-size: 5px;
-  color: var(--white);
-  line-height: 1;
-}
+/* history-fab replaced by .right-tab in the tab strip */
 
 /* ── History Overlay / Drawer ────────────────────── */
+/* No backdrop — drawer is a fixed panel matching parking lot width */
 .history-overlay {
   position: fixed;
-  inset: 0;
-  z-index: 500;
+  top: 0; right: 0; bottom: 0;
+  z-index: 400;
   display: flex;
   align-items: stretch;
-  justify-content: flex-end;
 }
 
-.history-backdrop {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.35);
-  cursor: pointer;
-}
+.history-backdrop { display: none; }
 
 .history-drawer {
-  width: min(560px, 95vw);
+  width: 320px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   border-radius: 0;
-  border-left: 1px solid var(--border-color);
-  box-shadow: -6px 0 30px rgba(0,0,0,0.2);
+  background: var(--w95-face);
+  box-shadow: var(--bevel-raised), -2px 0 0 var(--w95-dark);
   animation: drawerIn 0.25s ease both;
 }
 
@@ -1260,9 +1378,9 @@ textarea, input { font-family: var(--body-font); }
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--white);
-  border-left: 2px solid var(--night);
-  box-shadow: -6px 0 32px rgba(0,0,0,0.18);
+  background: var(--w95-face);
+  border: none;
+  box-shadow: var(--bevel-raised), -2px 0 0 var(--w95-dark);
   overflow: hidden;
 }
 .sb-titlebar {
@@ -1283,14 +1401,16 @@ textarea, input { font-family: var(--body-font); }
   background: transparent;
   border: 1px solid rgba(255,255,255,0.5);
   color: #fff;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
 }
 .sb-close-btn:hover { background: rgba(255,255,255,0.2); }
 
@@ -1435,13 +1555,16 @@ textarea, input { font-family: var(--body-font); }
 .sb-task-row:hover { background: var(--blue-light); }
 .sb-task-row--done { opacity: 0.55; }
 .sb-task-check {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
   flex-shrink: 0;
-  accent-color: var(--blue);
+  accent-color: var(--night);
+  /* Expand touch target without growing visual size */
+  padding: 10px;
+  margin: -10px;
 }
-.sb-task-check:disabled { cursor: not-allowed; }
+.sb-task-check:disabled { cursor: not-allowed; opacity: 0.5; }
 .sb-task-label {
   flex: 1;
   font-size: var(--font-sm);
@@ -1492,11 +1615,11 @@ textarea, input { font-family: var(--body-font); }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: var(--lime);
-  border: 1px solid #a0d070;
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-  margin-bottom: 14px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 8px 0 12px;
+  margin-bottom: 4px;
   flex-wrap: wrap;
 }
 .bd-callout-left {
@@ -1564,6 +1687,138 @@ textarea, input { font-family: var(--body-font); }
   background: var(--lime);
   border-color: #a0d070;
   color: var(--night);
+}
+
+/* ── Clippy ──────────────────────────────────────── */
+.clippy-root {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  pointer-events: none;
+}
+
+/* Speech bubble */
+.clippy-bubble {
+  position: relative;
+  background: #FFFFC0;      /* classic yellow sticky note */
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 16px 40px 16px 16px;
+  max-width: min(280px, 70vw);
+  margin-bottom: 8px;
+  pointer-events: all;
+  box-shadow: 3px 3px 0 #888;
+  animation: clippyBubbleIn 0.18s ease both;
+}
+@keyframes clippyBubbleIn {
+  from { opacity: 0; transform: scale(0.85) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Tail — points down-right toward Clippy */
+.clippy-bubble-tail {
+  position: absolute;
+  bottom: -20px;
+  left: 40px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 20px solid #000;
+}
+.clippy-bubble-tail::after {
+  content: '';
+  position: absolute;
+  top: -22px;
+  left: -10px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 18px solid #FFFFC0;
+}
+
+.clippy-bubble-close {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 28px; height: 28px;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #666;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 3px;
+}
+.clippy-bubble-close:hover { background: #eee; color: #000; }
+
+.clippy-section { margin-bottom: 10px; }
+.clippy-section:last-child { margin-bottom: 0; }
+.clippy-section-label {
+  display: block;
+  font-family: var(--pixel-font);
+  font-size: 7px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+}
+.clippy-section-text {
+  font-size: 14px;
+  color: #222;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Clippy character button */
+.clippy-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  pointer-events: all;
+  transition: transform 0.15s;
+}
+.clippy-btn:hover { transform: scale(1.08); }
+.clippy-btn:active { transform: scale(0.95); }
+
+.clippy-btn--wiggle {
+  animation: clippyWiggle 0.5s ease-in-out 3;
+}
+@keyframes clippyWiggle {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(-8deg) scale(1.05); }
+  50%  { transform: rotate(8deg) scale(1.05); }
+  80%  { transform: rotate(-4deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.clippy-img {
+  width: 90px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.4));
+}
+
+/* Ping dot — invite first click */
+.clippy-ping {
+  position: absolute;
+  top: 0; right: 0;
+  width: 14px; height: 14px;
+  background: var(--red);
+  border-radius: 50%;
+  border: 2px solid #fff;
+  animation: clippyPing 1.4s ease-in-out infinite;
+}
+@keyframes clippyPing {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.3); opacity: 0.7; }
 }
 
 /* ── Responsive ──────────────────────────────────── */

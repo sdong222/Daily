@@ -7,6 +7,7 @@ import ResultsScreen from './components/ResultsScreen'
 import ParkingLot from './components/ParkingLot'
 import HistoryDrawer from './components/HistoryDrawer'
 import SessionBrowser from './components/SessionBrowser'
+import Clippy from './components/Clippy'
 import { generateDayPlan } from './services/anthropicService'
 import {
   createSession,
@@ -29,6 +30,12 @@ export default function App() {
   const [currentSessionId, setCurrentSessionId] = useState(null)
   const [incompleteTasks, setIncompleteTasks] = useState([])
   const [showHistory, setShowHistory] = useState(false)
+  const [parkingOpen, setParkingOpen] = useState(false)
+
+  const openParking = () => { setShowHistory(false); setParkingOpen(true) }
+  const openHistory = () => { setParkingOpen(false); setShowHistory(true) }
+  const closeParking = () => setParkingOpen(false)
+  const closeHistory = () => setShowHistory(false)
   const [showSessionBrowser, setShowSessionBrowser] = useState(false)
   // Tasks loaded directly from a previous session (bypasses AI generation)
   const [overrideTasks, setOverrideTasks] = useState(null)
@@ -167,26 +174,35 @@ export default function App() {
         </div>
       </main>
 
-      {/* History button — always visible */}
-      <button
-        className="history-fab"
-        onClick={() => setShowHistory(true)}
-        title="View session history"
-        aria-label="Session history"
-      >
-        <span style={{ fontSize: 18 }}>📅</span>
-        <span className="history-fab-label">LOG</span>
-      </button>
+      {/* Right-edge tab strip — Parking Lot + Log side by side */}
+      <div className={`right-tabs ${parkingOpen || showHistory ? 'right-tabs--open' : ''}`}>
+        <button
+          className={`right-tab ${parkingOpen ? 'right-tab--active' : ''}`}
+          onClick={() => parkingOpen ? closeParking() : openParking()}
+          aria-label={parkingOpen ? 'Close parking lot' : 'Open parking lot'}
+        >
+          <span className="right-tab-label">PARKING LOT</span>
+        </button>
+        <button
+          className={`right-tab ${showHistory ? 'right-tab--active' : ''}`}
+          onClick={() => showHistory ? closeHistory() : openHistory()}
+          aria-label={showHistory ? 'Close log' : 'Open session log'}
+        >
+          <span className="right-tab-label">LOG</span>
+        </button>
+      </div>
 
       <ParkingLot
         notes={parkingNotes}
         onChange={handleParkingNotesChange}
         onAddTask={screen === 3 ? (task) => setPendingTask(task) : null}
+        isOpen={parkingOpen}
+        onToggle={() => parkingOpen ? closeParking() : openParking()}
       />
 
       {showHistory && (
         <HistoryDrawer
-          onClose={() => setShowHistory(false)}
+          onClose={closeHistory}
           onAddToToday={handleAddToToday}
         />
       )}
@@ -197,6 +213,14 @@ export default function App() {
           onContinueSession={handleContinueSession}
           onAddPickedTasks={handleAddPickedTasks}
           onAddToToday={handleAddToToday}
+        />
+      )}
+
+      {/* Clippy — visible on results screen with encouragement & let-go-of */}
+      {screen === 3 && results && (
+        <Clippy
+          encouragement={results.encouragement}
+          letGoOf={results.letGoOf}
         />
       )}
     </div>

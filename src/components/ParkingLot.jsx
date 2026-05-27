@@ -2,26 +2,15 @@ import { useState, useEffect } from 'react'
 import { playClick, playSuccess } from '../utils/retroSound'
 import { analyzeParkingLot } from '../services/anthropicService'
 
-export default function ParkingLot({ notes = '', onChange = () => {}, onAddTask = null }) {
-  const [isOpen, setIsOpen] = useState(false)
+export default function ParkingLot({ notes = '', onChange = () => {}, onAddTask = null, isOpen = false, onToggle = () => {} }) {
   const [aiState, setAiState] = useState('idle') // 'idle' | 'loading' | 'done' | 'error'
   const [aiSuggestions, setAiSuggestions] = useState([])
   const [aiError, setAiError] = useState('')
   const [confirmClear, setConfirmClear] = useState(false)
 
-  // Push content left when panel opens
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('parking-panel-open')
-    } else {
-      document.body.classList.remove('parking-panel-open')
-    }
-    return () => document.body.classList.remove('parking-panel-open')
-  }, [isOpen])
-
   const handleToggle = () => {
     playClick()
-    setIsOpen((v) => !v)
+    onToggle()
   }
 
   const handleSave = () => {
@@ -72,18 +61,7 @@ export default function ParkingLot({ notes = '', onChange = () => {}, onAddTask 
 
   return (
     <>
-      {/* Toggle button */}
-      <button
-        className={`parking-lot-btn ${isOpen ? 'parking-lot-btn--open' : ''}`}
-        onClick={handleToggle}
-        aria-label={isOpen ? 'Close parking lot' : 'Open parking lot'}
-        title="Parking Lot"
-      >
-        <FloppyIcon active={isOpen} />
-        <span className="parking-lot-btn-label">PARK</span>
-      </button>
-
-      {/* Side panel */}
+      {/* Side panel — button is rendered in App.jsx tab strip */}
       <aside
         className={`parking-lot-panel ${isOpen ? 'parking-lot-panel--open' : ''}`}
         aria-label="Parking Lot"
@@ -98,7 +76,7 @@ export default function ParkingLot({ notes = '', onChange = () => {}, onAddTask 
           <div className="win95-titlebar-controls">
             <button
               className="win95-ctrl-btn win95-ctrl-btn--close"
-              onClick={() => { playClick(); setIsOpen(false) }}
+              onClick={() => { playClick(); onToggle() }}
               aria-label="Close"
             >✕</button>
           </div>

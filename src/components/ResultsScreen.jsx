@@ -166,14 +166,32 @@ export default function ResultsScreen({
     const task = tasks.find((t) => t.id === id)
     if (!task) return
     const nowDone = !task.done
+
     if (nowDone) {
       playSuccess()
+      // Immediately show checkmark
+      updateTask(id, { done: true })
       setJustCompleted(id)
-      setTimeout(() => setJustCompleted((cur) => (cur === id ? null : cur)), 1200)
+      // After burst: collapse + sink to the bottom of the list
+      setTimeout(() => {
+        setJustCompleted((cur) => (cur === id ? null : cur))
+        setTasks((prev) => {
+          const without = prev.filter((t) => t.id !== id)
+          const updated = { ...prev.find((t) => t.id === id), done: true, collapsed: true }
+          return [...without, updated]
+        })
+      }, 1000)
     } else {
+      // Un-completing: uncheck, expand, float back above other done tasks
       playCheck()
+      setTasks((prev) => {
+        const without = prev.filter((t) => t.id !== id)
+        const updated = { ...prev.find((t) => t.id === id), done: false, collapsed: false }
+        const firstDoneIdx = without.findIndex((t) => t.done)
+        if (firstDoneIdx === -1) return [...without, updated]
+        return [...without.slice(0, firstDoneIdx), updated, ...without.slice(firstDoneIdx)]
+      })
     }
-    updateTask(id, { done: nowDone })
   }
 
   const handlePriorityClick = (id) => {
@@ -323,22 +341,7 @@ export default function ResultsScreen({
           + Add Task
         </button>
 
-        {(letGoOf || encouragement) && (
-          <div className="bottom-card" style={{ marginTop: 10 }}>
-            {encouragement && (
-              <div className="bottom-card-section">
-                <span className="bottom-card-label">Today's Encouragement</span>
-                <p className="bottom-card-text">"{encouragement}"</p>
-              </div>
-            )}
-            {letGoOf && (
-              <div className="bottom-card-section">
-                <span className="bottom-card-label">Let go of today</span>
-                <p className="bottom-card-text">{letGoOf}</p>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Encouragement & let-go-of moved to Clippy in App.jsx */}
 
         <div className="results-footer">
           <button className="win95-btn" onClick={() => { playClick(); onReset() }}>
@@ -477,14 +480,14 @@ function TaskCard({
                   }}
                 />
               ) : (
-                <p
-                  className={`task-text ${task.done ? 'task-text--done' : ''}`}
+                <button
+                  className={`task-edit-btn ${task.done ? 'task-text--done' : ''}`}
                   onClick={onEditStart}
-                  title="Click to edit"
-                  style={{ cursor: 'text' }}
+                  aria-label="Edit task title"
                 >
-                  {task.task}
-                </p>
+                  <span className="task-edit-text">{task.task}</span>
+                  <span className="task-edit-icon" aria-hidden="true">✎</span>
+                </button>
               )}
             </div>
           </div>
